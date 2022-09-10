@@ -34,6 +34,7 @@ class Game:
         self.active_player = None
         self.game_on = False
 
+    # Called when game starts
     def start(self):
         title_screen("Tic-Tac-Toe", 5)
         self.game_on = True
@@ -53,8 +54,11 @@ class Game:
         print(f"PlayerOne: {self.p1.letter}         PlayerTwo: {self.p2.letter}")
         print(f"    0                    0       ")
         print("_" * 35)
-
+    
+    # Function that handles the game loop
     def new_game(self):
+        
+        # Initialises a new game by resetting the board and assigning letters
         self.board = list(empty_board)
         letters = ["X", "O"]
         self.p1.letter = choice(letters)
@@ -65,22 +69,25 @@ class Game:
         self.game_on = True
 
         self.draw_game_window()
-
+        
+        # Loop that handles game logic
         while self.game_on:
 
-            move = self.make_move(self.active_player)
-            self.board[move - 1] = self.active_player.letter
+            move = self.make_move(self.active_player)           # Gets player move
+            self.board[move - 1] = self.active_player.letter    # Draws the move on the board
             self.draw_game_window()
-            win = self.check_win(self.active_player)
-
+            win = self.check_win(self.active_player)            # Checks if it is a winning move
+            
+            # If there is a win or a draw, the game is restarted
             if win is not None:
                 self.game_on = False
                 title_screen(win, 1)
                 self.new_game()
-
+            
             self.switch_player()
             self.draw_game_window()
 
+    # Function to get the player input and check if the move is valid
     def make_move(self, player):
         while True:
             move = input(f"{player.name} Move: \n")
@@ -111,7 +118,8 @@ class Game:
 
     def check_win(self, player):
         letter = player.letter
-
+        
+        # Calls a draw if there is no more free space
         if " " not in self.board:
             return "Draw"
 
